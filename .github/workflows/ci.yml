@@ -1,0 +1,20 @@
+name: Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pimjansen/npm-security-action@main
+        with:
+          package-manager: pnpm
+          severity-threshold: high
+          working-directory: .
+          enable-pr-comments: true
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
