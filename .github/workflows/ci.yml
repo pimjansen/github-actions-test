@@ -1,0 +1,34 @@
+name: Security Scan
+
+on:
+  pull_request:
+    paths:
+      - 'package-lock.json'
+      - 'npm-shrinkwrap.json'
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'package-lock.json'
+      - 'npm-shrinkwrap.json'
+      - 'yarn.lock'
+      - 'pnpm-lock. yaml'
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pimjansen/npm-security-action@main
+        with:
+          package-manager: 'pnpm'
+          severity-threshold: 'moderate'
+          working-directory: '.'
+          enable-pr-comments: true
+      
+    # secrets:
+      # SOCKET_TOKEN: ${{ secrets.SOCKET_TOKEN }}
+      # SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
